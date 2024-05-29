@@ -14,22 +14,61 @@ namespace Calculator___XUnit__Tests
 {
     public class DatabaseTests
     {
-        [Theory]
-        [InlineData(21, 1, 22, "+", "\r\n21 + 1 = 22")]        
-        [InlineData(1, 1, 1, "*", "\r\n1 * 1 = 1")]            
-        [InlineData(1, 3, 4, "+", "\r\n1 + 3 = 4")]            
         
-        public void ShowPreviousCalculations_PrintsCorrectCalculations(double num1, double num2, double result, string operation, string expectedOutput)
+        [Fact]
+        public void ShowPreviousCalculations_ShouldDisplayCalculations()
         {
             // Arrange
-            var consoleOutput = new StringWriter();
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            using (var context = new AppDbContext(options))
+            {
+                context.CalculationHistory.AddRange(new List<CalculationHistory>
+                {
+                    new CalculationHistory { Number1 = 1, MathOperation = "+", Number2 = 1, Result = 2, DateOfCalculation = DateTime.Now },
+                    new CalculationHistory { Number1 = 2, MathOperation = "-", Number2 = 1, Result = 1, DateOfCalculation = DateTime.Now }
+                });
+                context.SaveChanges();
+            }
+            
+            var consoleOutput = new System.IO.StringWriter();
             Console.SetOut(consoleOutput);
 
             // Act
             CalculationHistory.ShowPreviousCalculations();
 
             // Assert
-            Assert.Contains(expectedOutput, consoleOutput.ToString());
+            var expectedOutput =
+                "Earlier calculations: \r\n" +
+                "1 + 1 = 2 (Date of Calculation: " + DateTime.Now.ToShortDateString() + ")\r\n" +
+                "2 - 1 = 1 (Date of Calculation: " + DateTime.Now.ToShortDateString() + ")\r\n";
+            Assert.Contains("Earlier calculations: \r\n1 + 1 = 2", consoleOutput.ToString());
+            Assert.Contains("2 - 1 = 1", consoleOutput.ToString());
+        }
+
+        [Fact]
+        public void SaveCalculations_ShouldSaveToDatabase()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            // Act
+            CalculationHistory.SaveCalculations(3, 4, 7, "+");
+
+            // Assert
+            using (var context = new AppDbContext(options))
+            {
+                var calculation = context.CalculationHistory.FirstOrDefault();
+                Assert.NotNull(calculation);
+                Assert.Equal(3, calculation.Number1);
+                Assert.Equal(4, calculation.Number2);
+                Assert.Equal(7, calculation.Result);
+                Assert.Equal("+", calculation.MathOperation);
+            }
         }
     }    
     

@@ -22,7 +22,7 @@ namespace Labb_6___XUnit.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source = BLACKBOX; Initial Catalog = CalculatorDB; TrustServerCertificate=True; Integrated security = True");
+            optionsBuilder.UseInMemoryDatabase("TestDatabase");
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Labb_6___XUnit
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
-        }
+        } 
         public static void ShowPreviousCalculations()
         {
             try

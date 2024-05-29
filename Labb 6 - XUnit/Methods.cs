@@ -108,7 +108,7 @@ namespace Labb_6___XUnit
         public static void ShowResult(double num1, double num2, double result, string symbol)
         {
             Console.WriteLine($"Result: {num1} {symbol} {num2} = {result}");
-            Console.ReadKey();
+            Console.ReadLine();
         }
 
         

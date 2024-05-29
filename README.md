@@ -61,3 +61,28 @@ Applikationen ska returnera kvoten av de två inmatade talen. För ovanstående 
 
 #### Förväntat resultat
 Applikationen ska generera ett felmeddelande för att nämnaren är noll och kasta ett undantag av typen `DivideByZeroException`.
+
+### Test 6: Visa resultat
+
+#### Instruktioner
+1. Öppna applikationen.
+2. Utför en beräkning (till exempel, `3 + 4`).
+3. Kontrollera så att konsolutdata ger rätt information.
+
+#### Förväntat resultat
+Applikationen ska visa resultatet av beräkningen med formatet:
+`Result: {num1} {symbol} {num2} = {result}`
+För exemplet ovan ska resultatet vara: `Result: 3 + 4 = 7`.
+
+### Test 7: Visa tidigare beräkningar
+
+#### Instruktioner
+1. Öppna applikationen.
+2. Utför en beräkning av valfritt räknesätt.
+3. Gå tillbaka till menyn igen.
+4. Välj alternativet för att visa tidigare beräkningar.
+5. Kontrollera att beräkningen visas på rätt sätt.
+
+#### Förväntat resultat
+Applikationen ska lista alla tidigare beräkningar med formatet:
+`{Number1} {MathOperation} {Number2} = {Result} (Date of Calculation: {DateOfCalculation})`.
